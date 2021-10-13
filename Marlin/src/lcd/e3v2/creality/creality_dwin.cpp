@@ -5876,13 +5876,20 @@ void CrealityDWINClass::Save_Settings(char *buff) {
   eeprom_settings.host_action_label_3 = Encode_String(action3);
   eeprom_settings.host_action_label_4 = Encode_String(action4);
   eeprom_settings.host_action_label_5 = Encode_String(action5);
+  #if HAS_MESH
+    eeprom_settings.viewer_print_v =  mesh_conf.viewer_print_value;
+  #endif
   memcpy(buff, &eeprom_settings, min(sizeof(eeprom_settings), eeprom_data_size));
+
 }
 
 void CrealityDWINClass::Load_Settings(const char *buff) {
   memcpy(&eeprom_settings, buff, min(sizeof(eeprom_settings), eeprom_data_size));
   #if ENABLED(AUTO_BED_LEVELING_UBL)
     mesh_conf.tilt_grid = eeprom_settings.tilt_grid_size+1;
+  #endif
+  #if HAS_MESH
+    mesh_conf.viewer_print_value = eeprom_settings.viewer_print_v;
   #endif
   if (eeprom_settings.corner_pos == 0) eeprom_settings.corner_pos = 325;
   corner_pos = eeprom_settings.corner_pos / 10.0f;
@@ -5917,6 +5924,10 @@ void CrealityDWINClass::Reset_Settings() {
   eeprom_settings.status_area_text = 0;
   eeprom_settings.coordinates_text = 0;
   eeprom_settings.coordinates_split_line = 0;
+  #if HAS_MESH
+    mesh_conf.viewer_print_value =  false;
+    eeprom_settings.viewer_print_v =  false;
+  #endif
   #if ENABLED(AUTO_BED_LEVELING_UBL)
     mesh_conf.tilt_grid = eeprom_settings.tilt_grid_size+1;
   #endif

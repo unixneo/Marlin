@@ -2,7 +2,7 @@
  * Marlin 3D Printer Firmware
  * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
- * Based on Sprinter and grbl.
+* Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,10 @@
 #include "rotary_encoder.h"
 #include "../../../libs/BL24CXX.h"
 #include "../../../inc/MarlinConfigPre.h"
+
+#ifndef BABYSTEP_WITHOUT_HOMING
+  #define BABYSTEP_WITHOUT_HOMING
+#endif
 
 enum processID : uint8_t {
   Main, Print, Menu, Value, Option, File, Popup, Confirm, Keyboard, Wait
@@ -296,6 +300,7 @@ public:
     uint64_t host_action_label_3 : 48;
     uint64_t host_action_label_4 : 48;
     uint64_t host_action_label_5 : 48;
+    bool viewer_print_v : 1;
   } eeprom_settings;
 
   const char * const color_names[11] = {"Default", "White", "Green", "Cyan", "Blue", "Magenta", "Red", "Orange", "Yellow", "Brown", "Black"};
