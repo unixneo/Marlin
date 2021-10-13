@@ -204,7 +204,7 @@ CrealityDWINClass CrealityDWIN;
 #if HAS_MESH
   struct Mesh_Settings {
     bool viewer_asymmetric_range = false;
-    bool viewer_print_value = false;
+    bool viewer_print_value = true;
     bool goto_mesh_value = false;
     bool drawing_mesh = false;
     uint8_t mesh_x = 0;
@@ -3763,6 +3763,7 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
                   break;
                 }
               #endif
+              mesh_conf.viewer_print_value = eeprom_settings.viewer_print_v;
               Draw_Menu(LevelView);
             }
             break;
@@ -3848,6 +3849,7 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
             else {
               mesh_conf.viewer_print_value = !mesh_conf.viewer_print_value;
               Draw_Checkbox(row, mesh_conf.viewer_print_value);
+              settings.save();
             }
             break;
           case LEVELING_VIEW_ASYMMETRIC:
@@ -5925,8 +5927,8 @@ void CrealityDWINClass::Reset_Settings() {
   eeprom_settings.coordinates_text = 0;
   eeprom_settings.coordinates_split_line = 0;
   #if HAS_MESH
-    mesh_conf.viewer_print_value =  false;
-    eeprom_settings.viewer_print_v =  false;
+    mesh_conf.viewer_print_value =  true;
+    eeprom_settings.viewer_print_v =  true;
   #endif
   #if ENABLED(AUTO_BED_LEVELING_UBL)
     mesh_conf.tilt_grid = eeprom_settings.tilt_grid_size+1;
